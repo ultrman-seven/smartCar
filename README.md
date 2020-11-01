@@ -1,10 +1,9 @@
 # smartCar
 this is the smart car competition
 
-|auther|Leslie|
-|:----------|:---------:|
-|chip|STC-8H8K64U|
-|starting date|2020/10/30|
+|auther|chip|starting date|
+|:----------|:---------:|:-----------------|
+|Leslie|STC-8H8K64U|2020/10/30|
 
 details
 ---
