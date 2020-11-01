@@ -21,3 +21,6 @@ is the function to initialization the oled. (having been put in `void startCarto
 
 `void startCartoon(void);`
 the function is used in the begining when the program start, put "新北とうふ店(自家用)" in oled.
+
+## fonts
+word mold of **ascii**
