@@ -4,6 +4,6 @@
 void main()
 {
 	startCartoon();
-	OLED_print("kxjNB!!");
+	OLED_print("kxjNB!!\nrmd nbDyp");
 	while (1);
 }

@@ -70,7 +70,7 @@ void Picture_display(un8* ptr_pic, un8 colStart, un8 pageStart, un8 line, un8 co
 {
 	un8 page, column;
 
-	for (page = pageStart; page < pageStart + (line / 8) - 1; page++)        //page loop
+	for (page = pageStart; page < pageStart + (line / 8); page++)        //page loop
 	{
 		Column_set(colStart);
 		Page_set(page);
@@ -173,12 +173,13 @@ void startCartoon(void)
 void OLED_print(char* str)
 {
 	un8 count = 0;
-	while (*str++)
+	while (*str)
 	{
 		switch (*str)
 		{
 		case '\n':
 			line += asciiHigh / 8;
+			count = -1;
 			break;
 		case '\b':
 			count--;
@@ -187,9 +188,10 @@ void OLED_print(char* str)
 			break;
 		default:
 			if (*str >= 32)
-				Picture_display(ASCII[*str - 32], count * asciiWide, line, asciiHigh, asciiWide);
+				Picture_display(ASCII[*str - 32], 1 + count * asciiWide + count, line, asciiHigh, asciiWide);
 			break;
 		}
 		count++;
+		str++;
 	}
 }
