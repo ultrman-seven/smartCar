@@ -4,5 +4,6 @@
 void main()
 {
 	startCartoon();
+	OLED_print("kxjNB!!");
 	while (1);
 }

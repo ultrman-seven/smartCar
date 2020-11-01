@@ -1,9 +1,10 @@
 #ifndef __OLED_H__
 #define __OLED_H__
 #include"common.h"
+#include"font.h"
 #define HEIGHT 64
 #define WIDE 69
-#define CH un8 code
+
 #define REVERSE Ins_trans(0xA7);
 sbit _CS = P0 ^ 4;
 sbit RES = P0 ^ 2;
@@ -14,4 +15,5 @@ sbit SI = P0 ^ 1;//serial data input
 void Ins_trans(unsigned char command);
 void Initial(void);
 void startCartoon(void);
+void OLED_print(char* str);
 #endif // !__OLED__H__
