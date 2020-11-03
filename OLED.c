@@ -63,6 +63,7 @@ void Screen_FillClear(unsigned char FC)
 		Column_set(2);
 		for (column = 0; column < 128; column++)	//column loop
 			Data_trans(FC);
+		Delay(5);
 	}
 }
 
@@ -143,21 +144,21 @@ Ins_trans(0xAF);//--turn on oled panel
 void startCartoon(void)
 {
 	RES = 0;
-	Delay(10);
+	Delay(100);
 	RES = 1;
 	Initial();
 	Screen_FillClear(0x00);
 	Picture_display(xing, 0, 0, 64, 49);
-	Delay(5);
+	Delay(50);
 	Screen_FillClear(0x00);
 	Picture_display(bei, 49, 0, 64, 49);
-	Delay(5);
+	Delay(50);
 	Screen_FillClear(0x00);
 	Picture_display(dfd_a, 0, 1, 40, 30);
 	Picture_display(dfd_b, 30, 1, 40, 30);
 	Picture_display(dfd_c, 60, 1, 40, 30);
 	Picture_display(dfd_d, 90, 1, 40, 30);
-	Delay(10);
+	Delay(100);
 	Screen_FillClear(0xff);
 	Screen_FillClear(0x00);
 	Picture_display(zjy_a, 0, 1, 40, 10);
@@ -165,7 +166,7 @@ void startCartoon(void)
 	Picture_display(zjy_c, 34, 1, 40, 24);
 	Picture_display(zjy_d, 58, 1, 40, 24);
 	Picture_display(zjy_e, 82, 1, 40, 10);
-	Delay(10);
+	Delay(100);
 	Screen_FillClear(0xff);
 	Screen_FillClear(0x00);
 }
