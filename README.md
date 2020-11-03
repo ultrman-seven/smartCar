@@ -3,7 +3,7 @@ this is the smart car competition
 
 |auther|chip|starting date|
 |:----------|:---------:|:-----------------|
-|Leslie|STC-8H8K64U|2020/10/30|
+|Leslie|STC-89C52|2020/10/30|
 
 details
 ---
