@@ -174,6 +174,7 @@ void startCartoon(void)
 void OLED_print(char* str)
 {
 	un8 count = 0;
+	un8 num;
 	while (*str)
 	{
 		switch (*str)
@@ -187,6 +188,9 @@ void OLED_print(char* str)
 			break;
 		case 127:
 			break;
+		case '%':
+			if (*++str == 'd')
+				;
 		default:
 			if (*str >= 32)
 				Picture_display(ASCII[*str - 32], 1 + count * asciiWide + count, line, asciiHigh, asciiWide);

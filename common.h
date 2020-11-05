@@ -1,6 +1,6 @@
 #ifndef __COMMON_H__
 #define __COMMON_H__
-#include<STC8.h>
+#include<STC8H.h>
 #include<intrins.h>
 typedef unsigned char un8;
 typedef unsigned int un16;
