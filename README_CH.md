@@ -17,12 +17,12 @@
 
 ## OLED屏幕
 
-使用函数'void Initial(void)'对oled屏幕进行初始化操作
+使用函数`void Initial(void)`对oled屏幕进行初始化操作
 
-'void startCartoon(void)'
+`void startCartoon(void)`
 在屏幕上显示开机动画“新北とラふ店（自家用）”**此函数已包含初始化函数**
 
-'void OLED_print(char* str);'
+`void OLED_print(char* str);`
 在oled上显示字符串，符合printf(stdio.h)规则（目前只有%d和部分转义字符：\n,\b,\%）
 
 ## 超声波
