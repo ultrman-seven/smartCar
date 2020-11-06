@@ -23,3 +23,14 @@ the function is used in the begining when the program start, put "新北とう�
 
 ## fonts
 word mold of **ascii**
+
+## 5 keys
+define up, down, left, right, mid
+
+## ultra sound
+
+## motor
+
+## inductance adc
+
+## main
