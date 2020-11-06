@@ -6,11 +6,11 @@
 #define WIDE 69
 
 #define REVERSE Ins_trans(0xA7);
-sbit _CS = P0 ^ 4;
-sbit RES = P0 ^ 2;
-sbit RS = P0 ^ 3;
-sbit SCL = P0 ^ 0;//serial clock input
-sbit SI = P0 ^ 1;//serial data input
+sbit _CS = P5 ^ 0;
+sbit RES = P3 ^ 2;
+sbit RS = P3 ^ 0;
+sbit SCL = P1 ^ 3;//serial clock input
+sbit SI = P1 ^ 4;//serial data input
 
 void Ins_trans(unsigned char command);
 void Initial(void);
