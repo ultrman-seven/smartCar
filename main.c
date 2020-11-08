@@ -1,60 +1,68 @@
 #include"common.h"
-#include"OLED.h"
+#include"oledio.h"
 #include"fivekeys.h"
-#include"ultraSound.h"
-#define OBSTACLE_DISTANCE 100
-sbit TR4 = T4T3M ^ 7;
-sbit TR3 = T4T3M ^ 3;
+#include"control.h"
+
+un8 chooseLine = 0;
 void initinial(void)
 {
 	//interrupt
 	EA = 1;
 
 	//IO
-	//需先将P_SW2的BIT7设置为1
-	P_SW2 |= 0x80;
+	P_SW2 |= 0x80;//允许访问扩展 RAM 区特殊功能寄存器
 	P0M0 = P1M0 = P2M0 = P3M0 = P4M0 = 0xff;
 	P0M1 = P1M1 = P2M1 = P3M1 = P4M1 = 0x00;
 //	P0PU = P1PU = P2PU = P3PU = P4PU = 0xff;
 
+	P_SW2 &= 0x7f;
+
 	//ultra sound
 	UlSoundInitinal();
 }
+
+
+//main
+//1.初始化各模块，包括io，超声波，蜂鸣器
+//2.初始化显示屏，播放开机动画
+//3.显示屏显示
+//4.触发按键进入菜单
+
 void main()
 {
 	initinial();
 	startCartoon();
-	
-	//定时器3中断进行超声波
-	//定时器4进行电感adc
-	IE2 |= 0x60;//T3T4中断允许
-	T4T3M = 0x20;//工作方式为定时，T3 12分频，T4 1分频
-
-	//设置定时初值,超声波 60毫秒@12.000MHz
-	T3L = 0xA0;
-	T3H = 0x15;
-		
-	//设置定时初值,adc 1毫秒@12.000MHz
-	T4L = 0x20;
-	T4H = 0xD1;
-
-	TR3 = TR4 = 1;//定时器3定时器4开始工作
-
-	while (1);
-}
-
-void t3_UlSound(void) interrupt 19
-{
-	if (ULsound_diatance() <= OBSTACLE_DISTANCE)
+	chooseLine = -1;
+	while (key_down | key_up | key_mid | key_left | key_right)
 	{
-		TR3 = 0;
-
-		TR3 = 1;
+		OLED_print("press any key to continue");
+		delay(800);
+		screenClear();
+		delay(500);
+	}
+	chooseLine = 0;
+	while (1)
+	{
+		OLED_print("car state  <off>\n");
+		OLED_print("model test\n");
+		if ((!key_up) && chooseLine > 0)
+			chooseLine--;
+		if ((!key_down) && chooseLine < 1)
+			chooseLine++;
 	}
 }
 
-void t4_InductanceAdc(void) interrupt 20
+void delay(un16 time)
 {
-
-
+	//@12.000MHz
+	unsigned char i, j;
+	while (time--)
+	{
+		i = 16;
+		j = 147;
+		do
+		{
+			while (--j);
+		} while (--i);
+	}
 }

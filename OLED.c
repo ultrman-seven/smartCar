@@ -1,12 +1,5 @@
 #include"OLED.h"
-un8 line = 0;
-void Delay(unsigned int time)
-{
-	unsigned int i, j;
-	for (i = 0; i < time; i++)
-		for (j = 0; j < 20000; j++)
-			;
-}
+
 void Ins_trans(unsigned char command)
   {
     unsigned char counter;
@@ -63,7 +56,7 @@ void Screen_FillClear(unsigned char FC)
 		Column_set(2);
 		for (column = 0; column < 128; column++)	//column loop
 			Data_trans(FC);
-		Delay(5);
+		delay(2);
 	}
 }
 
@@ -78,6 +71,20 @@ void Picture_display(un8* ptr_pic, un8 colStart, un8 pageStart, un8 line, un8 co
 
 		for (column = 0; column < col; column++)	//column loop
 			Data_trans(*ptr_pic++);
+	}
+}
+
+void PictureContrastDisplay(un8* ptr_pic, un8 colStart, un8 pageStart, un8 line, un8 col)
+{
+	un8 page, column;
+
+	for (page = pageStart; page < pageStart + (line / 8); page++)        //page loop
+	{
+		Column_set(colStart);
+		Page_set(page);
+
+		for (column = 0; column < col; column++)	//column loop
+			Data_trans(~*ptr_pic++);
 	}
 }
 
@@ -139,64 +146,4 @@ Ins_trans(0xF1);
 
 //11
 Ins_trans(0xAF);//--turn on oled panel
-}
-
-void startCartoon(void)
-{
-	RES = 0;
-	Delay(100);
-	RES = 1;
-	Initial();
-	Screen_FillClear(0x00);
-	Picture_display(xing, 0, 0, 64, 49);
-	Delay(50);
-	Screen_FillClear(0x00);
-	Picture_display(bei, 49, 0, 64, 49);
-	Delay(50);
-	Screen_FillClear(0x00);
-	Picture_display(dfd_a, 0, 1, 40, 30);
-	Picture_display(dfd_b, 30, 1, 40, 30);
-	Picture_display(dfd_c, 60, 1, 40, 30);
-	Picture_display(dfd_d, 90, 1, 40, 30);
-	Delay(100);
-	Screen_FillClear(0xff);
-	Screen_FillClear(0x00);
-	Picture_display(zjy_a, 0, 1, 40, 10);
-	Picture_display(zjy_b, 10, 1, 40, 24);
-	Picture_display(zjy_c, 34, 1, 40, 24);
-	Picture_display(zjy_d, 58, 1, 40, 24);
-	Picture_display(zjy_e, 82, 1, 40, 10);
-	Delay(100);
-	Screen_FillClear(0xff);
-	Screen_FillClear(0x00);
-}
-
-void OLED_print(char* str)
-{
-	un8 count = 0;
-	un8 num;
-	while (*str)
-	{
-		switch (*str)
-		{
-		case '\n':
-			line += asciiHigh / 8;
-			count = -1;
-			break;
-		case '\b':
-			count--;
-			break;
-		case 127:
-			break;
-		case '%':
-			if (*++str == 'd')
-				;
-		default:
-			if (*str >= 32)
-				Picture_display(ASCII[*str - 32], 1 + count * asciiWide + count, line, asciiHigh, asciiWide);
-			break;
-		}
-		count++;
-		str++;
-	}
 }
