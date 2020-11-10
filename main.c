@@ -2,8 +2,10 @@
 #include"oledio.h"
 #include"fivekeys.h"
 #include"control.h"
+#include"menu.h"
 
-un8 chooseLine = 0;
+sbit bep = P0 ^ 4;
+
 void initinial(void)
 {
 	//interrupt
@@ -16,11 +18,11 @@ void initinial(void)
 //	P0PU = P1PU = P2PU = P3PU = P4PU = 0xff;
 
 	P_SW2 &= 0x7f;
-
+	bep = 1;
 	//ultra sound
 	UlSoundInitinal();
+	carOff();
 }
-
 
 //main
 //1.³õÊ¼»¯¸÷Ä£¿é£¬°üÀ¨io£¬³¬Éù²¨£¬·äÃùÆ÷
@@ -33,7 +35,7 @@ void main()
 	initinial();
 	startCartoon();
 	chooseLine = -1;
-	while (key_down | key_up | key_mid | key_left | key_right)
+	while (HAVE_KEY_BEEN_PRESSED)
 	{
 		OLED_print("press any key to continue");
 		delay(800);
@@ -41,15 +43,9 @@ void main()
 		delay(500);
 	}
 	chooseLine = 0;
+	displayMenu();
 	while (1)
-	{
-		OLED_print("car state  <off>\n");
-		OLED_print("model test\n");
-		if ((!key_up) && chooseLine > 0)
-			chooseLine--;
-		if ((!key_down) && chooseLine < 1)
-			chooseLine++;
-	}
+		keyOperation();
 }
 
 void delay(un16 time)

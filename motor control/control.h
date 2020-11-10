@@ -5,12 +5,12 @@
 #include"inadc.h"
 #include"ultraSound.h"
 
-#define OBSTACLE_DISTANCE 100
-
 #define T4ON T4T3M|=0x80;
 #define T4OFF T4T3M&=0x7f;
 #define T3ON T4T3M|=0x08;
 #define T3OFF T4T3M&=0xf7;
+
+extern un8 obstacleDistance;
 
 void carStart(void);
 void carOff(void);

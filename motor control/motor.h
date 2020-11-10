@@ -11,10 +11,10 @@
 
 sbit E_left = P0 ^ 0;
 sbit E_right = P0 ^ 1;
-sbit M0left = P0 ^ 2;
-sbit M1left = P0 ^ 3;
-sbit M0right = P0 ^ 4;
-sbit M1right = P0 ^ 5;
+sbit M0left = P3 ^ 5;
+sbit M1left = P5 ^ 1;
+sbit M0right = P5 ^ 0;
+sbit M1right = P3 ^ 4;
 
 void motorStateSet(un8 state, un8 motor);
 void motorSpeedSet(un8 speed, un8 motor);
