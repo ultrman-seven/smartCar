@@ -18,10 +18,14 @@ void initinial(void)
 //	P0PU = P1PU = P2PU = P3PU = P4PU = 0xff;
 
 	P_SW2 &= 0x7f;
+
 	bep = 1;
 	//ultra sound
 	UlSoundInitinal();
 	carOff();
+
+	//menu
+	menuInitial();
 }
 
 //main
@@ -37,7 +41,7 @@ void main()
 	chooseLine = -1;
 	while (HAVE_KEY_BEEN_PRESSED)
 	{
-		OLED_print("press any key to continue");
+		OLED_print("press any key\nto continue");
 		delay(800);
 		screenClear();
 		delay(500);
@@ -48,7 +52,7 @@ void main()
 		keyOperation();
 }
 
-void delay(un16 time)
+void delay(un16 time)//大约延时为time毫秒
 {
 	//@12.000MHz
 	unsigned char i, j;

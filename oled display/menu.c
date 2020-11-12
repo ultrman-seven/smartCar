@@ -1,12 +1,13 @@
 #include"menu.h"
 #include"fivekeys.h"
+#include"control.h"
 #define MENU_NUM 3
 #define TEST 3
 #define MODIFY 4
 un8 chooseLine = 0;
 menu project[MENU_NUM] = { {"car state\n",0},{"model test\n",0},{"parameter modify\n",0} };
 menu test[TEST] = { {"ultra sound\n",0},{"inductance adc\n",0},{"speed control\n",0} };
-menu modify[MODIFY] = { {"",0},{"",0},{"",0} ,{"press 'mid'\nto return back\n",0} };
+menu modify[MODIFY] = { {"obstacle distance",0},{"std_s_l",0},{"std_s_r",0} ,{"press 'mid'\nto return back\n",0} };
 //显示只有开/关状态的菜单
 void displayStateMenu(un8 num, menu* men)
 {
@@ -62,21 +63,67 @@ void testMenu(void)
 {
 	un8 count;
 	screenClear();
-	displayStateMenu(TEST, testMenu);
-	if (HAVE_KEY_BEEN_PRESSED)
-	{
-		keyChooseState(TEST, test);
-	}
+	displayStateMenu(TEST, test);
+	while(key_mid)
+		if (HAVE_KEY_BEEN_PRESSED)
+		{
+			keyChooseState(TEST, test);
+			for (count = 0; count < TEST; count++)
+			{
+				if (test[count].value)
+					switch (count)
+					{
+					case 0:
+						screenClear();
+						OLED_print("obstacle distance\nis <");
+						OLED_putNumber(ULsound_diatance());
+						OLED_print(">\npress 'mid' to\nreturn back");
+						while (key_mid)
+							;
+						screenClear();
+						displayStateMenu(TEST, test);
+						break;
+					case 1:
+						screenClear();
+						OLED_print("press 'left' to show left induced voltage value, so the left\npress 'mid' to back");
+						while (key_mid)
+							if (!key_left)
+							{
+								screenClear();
+								OLED_print("left induced voltage value is <");
+								OLED_putNumber(adcMeasure(LEFTindc));
+								OLED_putchar('>');
+							}
+							else
+								if (!key_right)
+								{
+									screenClear();
+									OLED_print("right induced voltage value is <");
+									OLED_putNumber(adcMeasure(RIGHTindc));
+									OLED_putchar('>');
+								}
+						screenClear();
+						displayStateMenu(TEST, test);
+						break;
+					case 2:
+						break;
+					default:
+						break;
+					}
+				test[count].value = 0;
+			}
+		}
 }
 //对“参数调整”菜单进行按键操作
 void modifyMenu(void)
 {
 	screenClear();
-	displayValueMenu(MODIFY, modify);
-	if (HAVE_KEY_BEEN_PRESSED)
-	{
-		keyChangeValue(MODIFY, modify);
-	}
+	displayValueMenu(MODIFY - 1, modify);
+	while(key_mid)
+		if (HAVE_KEY_BEEN_PRESSED)
+		{
+			keyChangeValue(MODIFY - 1, modify);
+		}
 }
 
 //main函数里一级按键操作
@@ -114,4 +161,11 @@ void keyOperation(void)
 			}
 			project[count].value = 0;
 		}
+}
+
+void menuInitial(void)
+{
+	modify[0].value = obstacleDistance;
+	modify[1].value = std_s_l;
+	modify[2].value = std_s_r;
 }
