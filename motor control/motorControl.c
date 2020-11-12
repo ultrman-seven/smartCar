@@ -4,6 +4,9 @@
 
 un8 obstacleDistance = 100;
 
+un8 std_s_l = 100;//左轮初始转速
+un8 std_d_r = 100;//右轮初始转速
+
 //开启定时器，t3 超声波，定时60ms；t4 adc检测，定时1毫秒；超声波及adc在定时器中断中进行
 void carStart(void)
 {
