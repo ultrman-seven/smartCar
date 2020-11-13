@@ -50,7 +50,7 @@ define up, down, left, right, mid
 
 `#define NO_HaveKeyBeenPressed (key_down | key_up | key_mid | key_left | key_right)`
 
-this define means none of these keys have been pressed.
+this defination means none of these keys have been pressed.
 
 here are other detiled functions
 ---
