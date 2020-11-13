@@ -11,8 +11,14 @@
 #define T3OFF T4T3M&=0xf7;
 
 extern un8 obstacleDistance;
+
 extern un8 std_s_l;
 extern un8 std_s_r;
+
+extern un8 roundTime = 50;
+extern un8 straightTime = 50;
+extern un8 roundSpeed = 50;
+
 
 void carStart(void);
 void carOff(void);

@@ -1,11 +1,15 @@
 #include"control.h"
 
 #define ADC_NUM 5
-
+//障碍物距离
 un8 obstacleDistance = 100;
+//标准速度
+un8 std_s_l = 100;
+un8 std_d_r = 100;
 
-un8 std_s_l = 100;//左轮初始转速
-un8 std_d_r = 100;//右轮初始转速
+un8 roundTime = 50;//转弯时间
+un8 straightTime = 50;//直行时间
+un8 roundSpeed = 50;//转弯幅度
 
 //开启定时器，t3 超声波，定时60ms；t4 adc检测，定时1毫秒；超声波及adc在定时器中断中进行
 void carStart(void)
@@ -49,20 +53,20 @@ void t3_UlSound(void) interrupt 19
 	if (ULsound_diatance() <= obstacleDistance)
 	{
 		T3OFF
-		motorSpeedSet(0, LEFTMOTOR);
-		delay(500);
-		motorSpeedSet(1, LEFTMOTOR);
-		motorSpeedSet(0, RIGHTMOTOR);
-		delay(500);
-		motorSpeedSet(1, RIGHTMOTOR);
-		delay(10000);
+		motorSpeedSet(roundSpeed, LEFTMOTOR);
+		delay(10 * roundTime);
+		motorSpeedSet(100, LEFTMOTOR);
+		motorSpeedSet(roundSpeed, RIGHTMOTOR);
+		delay(10 * roundTime);
+		motorSpeedSet(100, RIGHTMOTOR);
+		delay(100 * straightTime);
 
-		motorSpeedSet(0, RIGHTMOTOR);
-		delay(500);
-		motorSpeedSet(1, RIGHTMOTOR);
-		motorSpeedSet(0, LEFTMOTOR);
-		delay(500);
-		motorSpeedSet(1, LEFTMOTOR);
+		motorSpeedSet(roundSpeed, RIGHTMOTOR);
+		delay(10 * roundTime);
+		motorSpeedSet(100, RIGHTMOTOR);
+		motorSpeedSet(roundSpeed, LEFTMOTOR);
+		delay(10 * roundTime);
+		motorSpeedSet(100, LEFTMOTOR);
 		T3ON
 	}
 }

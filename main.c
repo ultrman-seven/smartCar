@@ -16,12 +16,14 @@ void initinial(void)
 	P0M0 = P1M0 = P2M0 = P3M0 = P4M0 = 0xff;
 	P0M1 = P1M1 = P2M1 = P3M1 = P4M1 = 0x00;
 //	P0PU = P1PU = P2PU = P3PU = P4PU = 0xff;
-
 	P_SW2 &= 0x7f;
 
 	bep = 1;
 	//ultra sound
 	UlSoundInitinal();
+
+	//car
+	motorInitial();
 	carOff();
 
 	//menu
@@ -39,7 +41,7 @@ void main()
 	initinial();
 	startCartoon();
 	chooseLine = -1;
-	while (HAVE_KEY_BEEN_PRESSED)
+	while (NO_HaveKeyBeenPressed)
 	{
 		OLED_print("press any key\nto continue");
 		delay(800);
@@ -48,6 +50,8 @@ void main()
 	}
 	chooseLine = 0;
 	displayMenu();
+	while (!NO_HaveKeyBeenPressed)
+		;
 	while (1)
 		keyOperation();
 }
