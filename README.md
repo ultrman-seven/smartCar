@@ -5,7 +5,7 @@ this is the smart car competition
 |:----------|:---------:|:-----------------|
 |Leslie|STC-8H8K64U|2020/10/30|
 
-details
+here are models
 ---
 ## oled
 `OLED.h` and `OLED.c` are codes about controling oled
@@ -23,14 +23,35 @@ the function is used in the begining when the program start, put "新北とう�
 
 ## fonts
 word mold of **ascii**
+word mold of **新北とうふ店(自家用)**
+
+## ultra sound
+using ultra sound to measure the distance between car and the obstacle
+
+`un16 ULsound_diatance(void)` return the distance (cm)
+
+## motor
+using pwm to control the speed of car motor.
+
+`void motorStateSet(un8 state, un8 motor)`is used to choose run forward or backward
+
+`void motorSpeedSet(un8 speed, un8 motor)`is used to set the speed of car. 
+'speed' is the percentage of the fast speed
+
+## inductance adc
+using the left and right inductance to find where the track is.
+
+`un16 adcMeasure(un8 select)`the function returns the value that the reference voltage dividing this value is the voltage that the inductance measured.
+
+it means that the higher the value is, the lower the voltage will be.
 
 ## 5 keys
 define up, down, left, right, mid
 
-## ultra sound
+here are other detiled functions
+---
+## menu
 
-## motor
-
-## inductance adc
+## control
 
 ## main
