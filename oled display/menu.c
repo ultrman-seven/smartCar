@@ -5,7 +5,7 @@
 #define TEST 3
 #define MODIFY 6
 un8 chooseLine = 0;
-menu project[MENU_NUM] = { {"car state\n",0},{"model test\n",0},{"parameter modify\n",0} };
+menu project[MENU_NUM] = { {"car start\n",0},{"model test\n",0},{"parameter modify\n",0} };
 menu test[TEST] = { {"ultra sound\n",0},{"inductance adc\n",0},{"speed control\n",0} };
 menu modify[MODIFY] = { {"obstacle distance",0},{"std_s_l",0},{"std_s_r",0} ,{"round speed",0},{"round time",0}, {"stright time",0} };
 //显示只有开/关状态的菜单
@@ -33,9 +33,9 @@ void keyChooseState(un8 num,menu* pro)
 {
 	un8 maxWait = 20;
 	if ((!key_up) && chooseLine > 0)
-		chooseLine--;
-	if ((!key_down) && chooseLine < 1)
-		chooseLine++;
+		chooseLine -= 2;
+	if (!key_down)
+		chooseLine += 2;
 	if (!(key_left && key_right))
 		pro[chooseLine].value = !pro[chooseLine].value;
 	screenClear();
@@ -48,9 +48,9 @@ void keyChangeValue(un8 num, menu* pro)
 {
 	un8 maxWait = 20;
 	if ((!key_up) && chooseLine > 0)
-		chooseLine--;
+		chooseLine -= 2;
 	if ((!key_down) && chooseLine < 1)
-		chooseLine++;
+		chooseLine += 2;
 	if (!key_left)
 		pro[chooseLine].value--;
 	if (!key_right)
@@ -63,7 +63,7 @@ void keyChangeValue(un8 num, menu* pro)
 //显示一级菜单
 void displayMenu(void)
 {
-	displayStuctMenu(MENU_NUM, project);
+	displayStateMenu(MENU_NUM, project);
 }
 //对“功能测试”菜单进行按键操作
 void testMenu(void)
@@ -72,8 +72,9 @@ void testMenu(void)
 	screenClear();
 	displayStateMenu(TEST, test);
 	while(key_mid)
-		if (NO_HaveKeyBeenPressed)
+		if (!NO_HaveKeyBeenPressed)
 		{
+			while (NO_HaveKeyBeenPressed);
 			keyChooseState(TEST, test);
 			for (count = 0; count < TEST; count++)
 			{
@@ -130,7 +131,7 @@ void modifyMenu(void)
 		if (!NO_HaveKeyBeenPressed)
 		{
 			keyChangeValue(MODIFY, modify);
-			displayMenu(MODIFY - chooseLine, modify + chooseLine);
+			displayValueMenu(MODIFY - chooseLine, modify + chooseLine);
 		}
 }
 
@@ -150,7 +151,7 @@ void keyOperation(void)
 
 				case 0:
 					screenClear();
-					OLED_print("smart car test\n\n\n(press 'mid' to\nreturn back)");
+					OLED_print("smart car test\n(press 'mid' to\nreturn back)");
 					carStart();
 					while (key_mid)
 						;

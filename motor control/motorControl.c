@@ -46,6 +46,7 @@ void carOff(void)
 	T3OFF
 	motorSpeedSet(0, LEFTMOTOR);
 	motorSpeedSet(0, RIGHTMOTOR);
+	M0left = M0right = M1left = M1right = 0;
 }
 
 void t3_UlSound(void) interrupt 19

@@ -11,24 +11,24 @@ void startCartoon(void)
 	_nop_();
 	Initial();
 	Screen_FillClear(0x00);
-	Picture_display(xinBei[0], 0, 0, 64, 49);
+	Picture_display(xin, 0, 0, 64, 49);
 	delay(500);
 	Screen_FillClear(0x00);
-	Picture_display(xinBei[1], 49, 0, 64, 49);
+	Picture_display(bei, 49, 0, 64, 49);
 	delay(500);
 	Screen_FillClear(0x00);
-	Picture_display(dfd[0], 0, 1, 40, 30);
-	Picture_display(dfd[1], 30, 1, 40, 30);
-	Picture_display(dfd[2], 60, 1, 40, 30);
-	Picture_display(dfd[3], 90, 1, 40, 30);
+	Picture_display(dfd1, 0, 1, 40, 30);
+	Picture_display(dfd2, 30, 1, 40, 30);
+	Picture_display(dfd3, 60, 1, 40, 30);
+	Picture_display(dfd4, 90, 1, 40, 30);
 	delay(700);
 	Screen_FillClear(0xff);
 	Screen_FillClear(0x00);
-	Picture_display(zjy[0], 0, 1, 40, 10);
-	Picture_display(zjy[1], 10, 1, 40, 24);
-	Picture_display(zjy[2], 34, 1, 40, 24);
-	Picture_display(zjy[3], 58, 1, 40, 24);
-	Picture_display(zjy[4], 82, 1, 40, 10);
+	Picture_display(zjy1, 0, 1, 40, 10);
+	Picture_display(zjy2, 10, 1, 40, 24);
+	Picture_display(zjy3, 34, 1, 40, 24);
+	Picture_display(zjy4, 58, 1, 40, 24);
+	Picture_display(zjy5, 82, 1, 40, 10);
 	delay(800);
 	Screen_FillClear(0xff);
 	Screen_FillClear(0x00);
@@ -61,7 +61,7 @@ void OLED_putchar(char ch)
 		break;
 	default:
 		if (ch >= 32)
-			Picture_display(ASCII[ch - 32], wordCount * asciiWide + wordCount, line, asciiHigh, asciiWide);
+			Picture_display(ASCII[ch - 32], 1 + wordCount * asciiWide, line, asciiHigh, asciiWide);
 		break;
 	}
 	wordCount++;
@@ -88,7 +88,7 @@ void OLED_putContrastChar(char ch)
 		break;
 	default:
 		if (ch >= 32)
-			PictureContrastDisplay(ASCII[ch - 32], 1 + wordCount * asciiWide + wordCount, line, asciiHigh, asciiWide);
+			PictureContrastDisplay(ASCII[ch - 32], 1 + wordCount * asciiWide, line, asciiHigh, asciiWide);
 		break;
 	}
 	wordCount++;

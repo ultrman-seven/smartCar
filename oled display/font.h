@@ -6,17 +6,17 @@
 extern const un8 asciiHigh;
 extern const un8 asciiWide;
 
-extern CH xing[];
+extern CH xin[];
 extern CH bei[];
-extern CH dfd_a[];
-extern CH dfd_b[];
-extern CH dfd_c[];
-extern CH dfd_d[];
-extern CH zjy_a[];
-extern CH zjy_b[];
-extern CH zjy_c[];
-extern CH zjy_d[];
-extern CH zjy_e[];
+extern CH dfd1[];
+extern CH dfd2[];
+extern CH dfd3[];
+extern CH dfd4[];
+extern CH zjy1[];
+extern CH zjy2[];
+extern CH zjy3[];
+extern CH zjy4[];
+extern CH zjy5[];
 
 extern CH ASCII[][16];
 #endif // !__FONT_H__

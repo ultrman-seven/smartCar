@@ -15,9 +15,9 @@ extern un8 obstacleDistance;
 extern un8 std_s_l;
 extern un8 std_s_r;
 
-extern un8 roundTime = 50;
-extern un8 straightTime = 50;
-extern un8 roundSpeed = 50;
+extern un8 roundTime;
+extern un8 straightTime;
+extern un8 roundSpeed;
 
 
 void carStart(void);
