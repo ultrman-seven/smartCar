@@ -14,8 +14,6 @@ here are models
 
 `OLED.h` and `OLED.c` are codes about controling oled
 
-### functions
-
 `void Ins_trans(unsigned char command);`
 is the function to send command to oled.
 
@@ -25,11 +23,7 @@ is the function to initialization the oled. (having been put in `void startCarto
 `void startCartoon(void);`
 the function is used in the begining when the program start, put "新北とうふ店(自家用)" in oled.
 
-### fonts
-
-word mold of **ascii**
-
-word mold of **新北とうふ店(自家用)**
+`font.h` and `font.c` are about word mold of **ASCII** and word mold of **新北とうふ店(自家用)**
 
 ## ultra sound
 |VCC|TRIG|ECHO|OUT|GND|
@@ -46,6 +40,16 @@ using pwm to control the speed of car motor.
 |Enable left|M0 left|M1 left|M0 right|M1 right|Enable right|
 |:-----------:|:--------:|:--------:|:--------:|:--------:|:-----------:|
 |2.0|3.5|5.1|5.0|3.4|2.2|
+
+Enable left and right receive pwm to control the speed.
+
+m0 and m1 control the work mode of motor
+|m0|m1|mode|
+|:----:|:----:|:--------:|
+|0|0|braking|
+|0|1|run forward|
+|1|0|run opposite|
+|1|1|braking|
 
 `void motorStateSet(un8 state, un8 motor)`is used to choose run forward or backward
 

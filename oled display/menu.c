@@ -5,9 +5,13 @@
 #define TEST 3
 #define MODIFY 6
 un8 chooseLine = 0;
+un8 testSpeedL = 50;
+un8 testSpeedR = 50;
 menu project[MENU_NUM] = { {"car start\n",0},{"model test\n",0},{"parameter modify\n",0} };
 menu test[TEST] = { {"ultra sound\n",0},{"inductance adc\n",0},{"speed control\n",0} };
 menu modify[MODIFY] = { {"obstacle distance",0},{"std_s_l",0},{"std_s_r",0} ,{"round speed",0},{"round time",0}, {"stright time",0} };
+menu speedTest[2] = { {"left",0},{"right",0} };
+
 //显示只有开/关状态的菜单
 void displayStateMenu(un8 num, menu* men)
 {
@@ -22,13 +26,14 @@ void displayValueMenu(un8 num, menu* men)
 	for (count = 0; count < num; count++)
 	{
 		OLED_print(men[count].str);
-		OLED_print("\n----<");
+		OLED_print("--");
 		OLED_putNumber(men[count].value);
-		OLED_print(">\n");
+		OLED_print("\n");
 	}
-	OLED_print("press mid to return back");
+	OLED_print("press mid to back");
 }
 //对菜单项目进行开关操作
+
 void keyChooseState(un8 num,menu* pro)
 {
 	un8 maxWait = 20;
@@ -37,7 +42,7 @@ void keyChooseState(un8 num,menu* pro)
 	if (!key_down)
 		chooseLine += 2;
 	if (!(key_left && key_right))
-		pro[chooseLine].value = !pro[chooseLine].value;
+		pro[chooseLine / 2].value = !pro[chooseLine / 2].value;
 	screenClear();
 	displayStateMenu(num, pro);
 	while (maxWait-- && !NO_HaveKeyBeenPressed)
@@ -52,19 +57,21 @@ void keyChangeValue(un8 num, menu* pro)
 	if ((!key_down) && chooseLine < 1)
 		chooseLine += 2;
 	if (!key_left)
-		pro[chooseLine].value--;
+		pro[chooseLine / 2].value--;
 	if (!key_right)
-		pro[chooseLine].value++;
+		pro[chooseLine / 2].value++;
 	screenClear();
 	displayValueMenu(num, pro);
 	while (maxWait-- && !NO_HaveKeyBeenPressed)
 		delay(100);
 }
+
 //显示一级菜单
 void displayMenu(void)
 {
 	displayStateMenu(MENU_NUM, project);
 }
+
 //对“功能测试”菜单进行按键操作
 void testMenu(void)
 {
@@ -74,7 +81,6 @@ void testMenu(void)
 	while(key_mid)
 		if (!NO_HaveKeyBeenPressed)
 		{
-			while (NO_HaveKeyBeenPressed);
 			keyChooseState(TEST, test);
 			for (count = 0; count < TEST; count++)
 			{
@@ -114,12 +120,30 @@ void testMenu(void)
 						displayStateMenu(TEST, test);
 						break;
 					case 2:
+						screenClear();
+						speedTest[0].value = testSpeedL;
+						speedTest[1].value = testSpeedR;
+						displayValueMenu(2, speedTest);
+						
+						while (key_mid)
+						{
+							if (!NO_HaveKeyBeenPressed)
+							{
+								screenClear();
+								keyChangeValue(2, speedTest);
+								displayValueMenu(2, speedTest);
+								motorSpeedSet(speedTest[0].value, LEFTMOTOR);
+								motorSpeedSet(speedTest[1].value, RIGHTMOTOR);
+							}
+						}
 						break;
 					default:
 						break;
 					}
 				test[count].value = 0;
 			}
+			screenClear();
+			displayStateMenu(TEST, test);
 		}
 }
 //对“参数调整”菜单进行按键操作
@@ -132,6 +156,12 @@ void modifyMenu(void)
 		{
 			keyChangeValue(MODIFY, modify);
 			displayValueMenu(MODIFY - chooseLine, modify + chooseLine);
+			obstacleDistance = modify[0].value;
+			std_s_l = modify[1].value;
+			std_s_r = modify[2].value;
+			roundSpeed = modify[3].value;
+			roundSpeed = modify[4].value;
+			straightTime = modify[5].value;
 		}
 }
 
@@ -141,8 +171,9 @@ void keyOperation(void)
 	un8 count;
 	if (!NO_HaveKeyBeenPressed)
 	{
-		keyChooseState(MENU_NUM,project);
+		keyChooseState(MENU_NUM, project);
 		for (count = 0; count < MENU_NUM; count++)
+		{
 			if (project[count].value)
 			{
 				chooseLine = 0;
@@ -161,8 +192,7 @@ void keyOperation(void)
 					testMenu();
 					break;
 				case 2:
-					while (key_mid)
-						modifyMenu();
+					modifyMenu();
 					break;
 				default:
 					break;
@@ -170,6 +200,9 @@ void keyOperation(void)
 			}
 			project[count].value = 0;
 		}
+		screenClear();
+		displayMenu();
+	}
 }
 
 void menuInitial(void)

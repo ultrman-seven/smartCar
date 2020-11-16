@@ -37,7 +37,7 @@ void startCartoon(void)
 void screenClear(void)
 {
 	Screen_FillClear(0x00);
-	line = wordCount = 0;
+	chooseLine = line = wordCount = 0;
 }
 
 void OLED_putchar(char ch)

@@ -1,11 +1,14 @@
 #include"control.h"
-
+#include"stdlib.h"
 #define ADC_NUM 5
-//障碍物距离
+//障碍物最小距离
 un8 obstacleDistance = 100;
 //标准速度
-un8 std_s_l = 100;
-un8 std_d_r = 100;
+un8 std_s_l = 90;
+un8 std_d_r = 90;
+
+//标准adc检测值
+un16 std_adcValue = 0xf0f0;
 
 un8 roundTime = 50;//转弯时间
 un8 straightTime = 50;//直行时间
@@ -42,11 +45,18 @@ void carStart(void)
 }
 void carOff(void)
 {
+	//关定时器（关超声波和电感）
 	T4OFF
 	T3OFF
+	//减速
+	//slow down
 	motorSpeedSet(0, LEFTMOTOR);
 	motorSpeedSet(0, RIGHTMOTOR);
-	M0left = M0right = M1left = M1right = 0;
+	
+	//制动
+	//braking
+	motorStateSet(MOTOR_BRAKING, LEFTMOTOR);
+	motorStateSet(MOTOR_BRAKING, RIGHTMOTOR);
 }
 
 void t3_UlSound(void) interrupt 19
@@ -54,33 +64,56 @@ void t3_UlSound(void) interrupt 19
 	if (ULsound_diatance() <= obstacleDistance)
 	{
 		T3OFF
-		motorSpeedSet(roundSpeed, LEFTMOTOR);
-		delay(10 * roundTime);
-		motorSpeedSet(100, LEFTMOTOR);
-		motorSpeedSet(roundSpeed, RIGHTMOTOR);
-		delay(10 * roundTime);
-		motorSpeedSet(100, RIGHTMOTOR);
-		delay(100 * straightTime);
+		//反正没用，写着玩。。。。
+		//just for fun
+		//龙卷风摧毁停车场
+		motorStateSet(MOTOR_OPPOSITE, LEFTMOTOR);
+		delay(0xffff);
+		motorStateSet(MOTOR_FORWARD, RIGHTMOTOR);
+		//motorSpeedSet(roundSpeed, LEFTMOTOR);
+		//delay(10 * roundTime);
+		//motorSpeedSet(100, LEFTMOTOR);
+		//motorSpeedSet(roundSpeed, RIGHTMOTOR);
+		//delay(10 * roundTime);
+		//motorSpeedSet(100, RIGHTMOTOR);
+		//delay(100 * straightTime);
 
-		motorSpeedSet(roundSpeed, RIGHTMOTOR);
-		delay(10 * roundTime);
-		motorSpeedSet(100, RIGHTMOTOR);
-		motorSpeedSet(roundSpeed, LEFTMOTOR);
-		delay(10 * roundTime);
-		motorSpeedSet(100, LEFTMOTOR);
+		//motorSpeedSet(roundSpeed, RIGHTMOTOR);
+		//delay(10 * roundTime);
+		//motorSpeedSet(100, RIGHTMOTOR);
+		//motorSpeedSet(roundSpeed, LEFTMOTOR);
+		//delay(10 * roundTime);
+		//motorSpeedSet(100, LEFTMOTOR);
 		T3ON
 	}
 }
 
+//返回中位数滤波后adc检测电感值
+un16 findMedianAdcValue(un16 adc)
+{
+	un16 value[ADC_NUM];
+	un8 count, i, temp;
+	for (count = 0; count < ADC_NUM; count++)
+		value[count] = adcMeasure(adc);
+//排个序，因为数值比较少，所以不用shell算法，简单排序就行
+	for (count = ADC_NUM - 1; count > 0; count--)
+		for (i = 0; i < count; i++)
+			if (value[i] < value[i + 1])
+			{
+				temp = value[i];
+				value[i] = value[i + 1];
+				value[i + 1] = temp;
+			}
+	return value[1 + ADC_NUM / 2];
+}
+
 void t4_InductanceAdc(void) interrupt 20
 {
-	un8 aLeft[ADC_NUM];
-	un8 aRight[ADC_NUM];
-	un8 count;
+	un16 adcValueL, adcValueR;
 	T4OFF
-	for (count = 0; count < ADC_NUM; count++)
-		aLeft[count] = adcMeasure(LEFTindc);
-	for (count = 0; count < ADC_NUM; count++)
-		aRight[count] = adcMeasure(RIGHTindc);
-
+	adcValueL = findMedianAdcValue(LEFTindc);
+	adcValueR = findMedianAdcValue(RIGHTindc);
+	motorSpeedSet(std_s_l + std_adcValue - adcLeft, LEFTMOTOR);
+	motorSpeedSet(std_s_r + std_adcValue - adcRight, RIGHTMOTOR);
+	T4ON
 }

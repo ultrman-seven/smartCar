@@ -17,6 +17,36 @@ void motorSpeedSet(un8 speed, un8 motor)
 	}
 	P_SW2 &= 0x7f;
 }
+void motorStateSet(un8 state, un8 motor)
+{
+	bit m0, m1;
+	switch (state)
+	{
+	case MOTOR_FORWARD:
+		m0 = 0;
+		m1 = 1;
+		break;
+	case MOTOR_OPPOSITE:
+		m0 = 1;
+		m1 = 0;
+		break;
+	case MOTOR_BRAKING:
+		m0 = m1 = 0;
+		break;
+	default:
+		break;
+	}
+	if (motor == LEFTMOTOR)
+	{
+		M0left = m0;
+		M1left = m1;
+	}
+	else
+	{
+		M0right = m0;
+		M1right = m1;
+	}
+}
 void motorInitial(void)
 {
 	P_SW2 |= 0x80;

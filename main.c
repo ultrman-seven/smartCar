@@ -13,8 +13,8 @@ void initinial(void)
 
 	//IO
 	P_SW2 |= 0x80;//允许访问扩展 RAM 区特殊功能寄存器
-	P0M0 = P1M0 = P2M0 = P3M0 = P4M0 = 0xff;
-	P0M1 = P1M1 = P2M1 = P3M1 = P4M1 = 0x00;
+	P0M0 = P1M0 = P2M0 = P3M0 = P4M0 = P5M0 = 0xff;
+	P0M1 = P1M1 = P2M1 = P3M1 = P4M1 = P5M1 = 0x00;
 	P0PU = P1PU = P2PU = P3PU = P4PU = 0xff;
 	P_SW2 &= 0x7f;
 
