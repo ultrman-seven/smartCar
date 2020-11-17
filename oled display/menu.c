@@ -77,6 +77,7 @@ void testMenu(void)
 {
 	un8 count;
 	screenClear();
+	chooseLine = 0;
 	displayStateMenu(TEST, test);
 	while(key_mid)
 		if (!NO_HaveKeyBeenPressed)
@@ -143,6 +144,7 @@ void testMenu(void)
 				test[count].value = 0;
 			}
 			screenClear();
+			chooseLine = 0;
 			displayStateMenu(TEST, test);
 		}
 }
@@ -150,6 +152,7 @@ void testMenu(void)
 void modifyMenu(void)
 {
 	screenClear();
+	chooseLine = 0;
 	displayValueMenu(MODIFY, modify);
 	while(key_mid)
 		if (!NO_HaveKeyBeenPressed)
@@ -182,6 +185,7 @@ void keyOperation(void)
 
 				case 0:
 					screenClear();
+					chooseLine = 0;
 					OLED_print("smart car test\n(press 'mid' to\nreturn back)");
 					carStart();
 					while (key_mid)
@@ -201,6 +205,7 @@ void keyOperation(void)
 			project[count].value = 0;
 		}
 		screenClear();
+		chooseLine = 0;
 		displayMenu();
 	}
 }

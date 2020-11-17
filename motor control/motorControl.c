@@ -5,7 +5,7 @@
 un8 obstacleDistance = 100;
 //标准速度
 un8 std_s_l = 90;
-un8 std_d_r = 90;
+un8 std_s_r = 90;
 
 //标准adc检测值
 un16 std_adcValue = 0xf0f0;
@@ -113,7 +113,7 @@ void t4_InductanceAdc(void) interrupt 20
 	T4OFF
 	adcValueL = findMedianAdcValue(LEFTindc);
 	adcValueR = findMedianAdcValue(RIGHTindc);
-	motorSpeedSet(std_s_l + std_adcValue - adcLeft, LEFTMOTOR);
-	motorSpeedSet(std_s_r + std_adcValue - adcRight, RIGHTMOTOR);
+	motorSpeedSet(std_s_l + std_adcValue - adcValueL, LEFTMOTOR);
+	motorSpeedSet(std_s_r + std_adcValue - adcValueR, RIGHTMOTOR);
 	T4ON
 }
