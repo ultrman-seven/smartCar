@@ -4,7 +4,7 @@
 #define MENU_NUM 3
 #define TEST 3
 #define MODIFY 6
-un8 chooseLine = 0;
+char chooseLine = 0;
 un8 testSpeedL = 50;
 un8 testSpeedR = 50;
 menu project[MENU_NUM] = { {"car start\n",0},{"model test\n",0},{"parameter modify\n",0} };
@@ -26,7 +26,7 @@ void displayValueMenu(un8 num, menu* men)
 	for (count = 0; count < num; count++)
 	{
 		OLED_print(men[count].str);
-		OLED_print("--");
+		OLED_print("-->");
 		OLED_putNumber(men[count].value);
 		OLED_print("\n");
 	}
@@ -54,7 +54,7 @@ void keyChangeValue(un8 num, menu* pro)
 	un8 maxWait = 20;
 	if ((!key_up) && chooseLine > 0)
 		chooseLine -= 2;
-	if ((!key_down) && chooseLine < 1)
+	if ((!key_down))
 		chooseLine += 2;
 	if (!key_left)
 		pro[chooseLine / 2].value--;
@@ -100,12 +100,13 @@ void testMenu(void)
 						break;
 					case 1:
 						screenClear();
-						OLED_print("press 'left' to show left induced voltage value, so the left\npress 'mid' to back");
+						chooseLine = -1;
+						OLED_print("left' to show left induced voltage value, so the right\nmid to back");
 						while (key_mid)
 							if (!key_left)
 							{
 								screenClear();
-								OLED_print("left induced voltage value is <");
+								OLED_print("left induced voltage value is\n<");
 								OLED_putNumber(adcMeasure(LEFTindc));
 								OLED_putchar('>');
 							}
@@ -113,30 +114,33 @@ void testMenu(void)
 								if (!key_right)
 								{
 									screenClear();
-									OLED_print("right induced voltage value is <");
+									OLED_print("right induced voltage value is\n<");
 									OLED_putNumber(adcMeasure(RIGHTindc));
 									OLED_putchar('>');
 								}
 						screenClear();
+						chooseLine = 0;
 						displayStateMenu(TEST, test);
 						break;
 					case 2:
 						screenClear();
+						chooseLine = 0;
 						speedTest[0].value = testSpeedL;
 						speedTest[1].value = testSpeedR;
 						displayValueMenu(2, speedTest);
-						
+						motorStateSet(MOTOR_FORWARD, LEFTMOTOR);
+						motorStateSet(MOTOR_FORWARD, RIGHTMOTOR);
 						while (key_mid)
 						{
 							if (!NO_HaveKeyBeenPressed)
 							{
 								screenClear();
 								keyChangeValue(2, speedTest);
-								displayValueMenu(2, speedTest);
 								motorSpeedSet(speedTest[0].value, LEFTMOTOR);
 								motorSpeedSet(speedTest[1].value, RIGHTMOTOR);
 							}
 						}
+						carOff();
 						break;
 					default:
 						break;
@@ -144,7 +148,6 @@ void testMenu(void)
 				test[count].value = 0;
 			}
 			screenClear();
-			chooseLine = 0;
 			displayStateMenu(TEST, test);
 		}
 }
@@ -205,7 +208,6 @@ void keyOperation(void)
 			project[count].value = 0;
 		}
 		screenClear();
-		chooseLine = 0;
 		displayMenu();
 	}
 }

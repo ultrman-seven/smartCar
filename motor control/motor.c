@@ -2,7 +2,7 @@
 
 void motorSpeedSet(un8 speed, un8 motor)
 {
-	un16 dutyCycle = 0xff * speed / 100;
+	un16 dutyCycle = 655 * (speed % 101);
 	P_SW2 |= 0x80;
 	if (motor == LEFTMOTOR)
 	{
@@ -57,8 +57,8 @@ void motorInitial(void)
 	PWM2_CCMR3 = 0x60;
 	PWM2_CCER1 = 0x01;
 	PWM2_CCER2 = 0x01;
-	//周期
-	PWM2_ARRH = 0x00;
+	//周期0xbf00 us
+	PWM2_ARRH = 0xbf;
 	PWM2_ARRL = 0x00;
 
 	//初始占空比100%

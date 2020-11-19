@@ -19,8 +19,12 @@ void initinial(void)
 	//上拉电阻
 	P0PU = P1PU = P2PU = P3PU = P4PU = 0xff;
 
-	P_SW2 &= 0x7f;
+	//中断优先级
+	IP = 0x01;
+	IPH = 0x03;
 
+	P_SW2 &= 0x7f;
+	//adcLeft = adcRight = 0;
 	bep = 1;
 	//ultra sound
 	UlSoundInitinal();
@@ -31,7 +35,7 @@ void initinial(void)
 
 	//key
 	key_up = key_down = key_left = key_right = key_mid = 1;
-	
+		
 	//menu
 	menuInitial();
 }

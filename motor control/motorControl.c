@@ -41,7 +41,7 @@ void carStart(void)
 
 	//定时器3定时器4开始工作
 	T4ON
-	T3ON
+	//T3ON//不使用超声波
 }
 void carOff(void)
 {

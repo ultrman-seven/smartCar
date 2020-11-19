@@ -4,7 +4,7 @@
 struct menuData
 {
 	char* str;
-	un8 value;
+	un16 value;
 };
 typedef struct menuData menu;
 
