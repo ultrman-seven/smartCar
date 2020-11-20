@@ -94,7 +94,7 @@ void OLED_putContrastChar(char ch)
 	wordCount++;
 }
 
-//单片机不能用递归！草！！！！
+//单片机不能用递归，参数会变。草。
 //MCU the shit
 
 //void OLED_putNumber(un16 num)

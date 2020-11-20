@@ -34,7 +34,7 @@ void UlSoundInitinal(void)
 
 un16 ULsound_diatance(void)
 {
-	un8 maxWait = 0xff;
+	un8 maxWait = 30;
 	distance = t0Time = 0;
 
 	//ultra sound start
@@ -52,7 +52,7 @@ un16 ULsound_diatance(void)
 	EX0 = ET0 = 1;
 	//等待echo拉低（外部中断结束）或超时
 	while (echo&&--maxWait)
-		Delay20us();
+		delay(2);
 	return t0Time * 1114 + distance * 0.017;//cm
 }
 

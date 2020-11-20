@@ -5,10 +5,21 @@
 #define TEST 3
 #define MODIFY 6
 char chooseLine = 0;
+
+#define speedControlCoefficient 40
+#define std_adcValue 1900
+//标准速度
+#define std_s_l 20
+#define std_s_r 20
+un16 adcValueL, adcValueR;
+int sleft, sright;
+
 un8 testSpeedL = 50;
 un8 testSpeedR = 50;
+
 menu project[MENU_NUM] = { {"car start\n",0},{"model test\n",0},{"parameter modify\n",0} };
 menu test[TEST] = { {"ultra sound\n",0},{"inductance adc\n",0},{"speed control\n",0} };
+
 menu modify[MODIFY] = { {"obstacle distance",0},{"std_s_l",0},{"std_s_r",0} ,{"round speed",0},{"round time",0}, {"stright time",0} };
 menu speedTest[2] = { {"left",0},{"right",0} };
 
@@ -60,8 +71,6 @@ void keyChangeValue(un8 num, menu* pro)
 		pro[chooseLine / 2].value--;
 	if (!key_right)
 		pro[chooseLine / 2].value++;
-	screenClear();
-	displayValueMenu(num, pro);
 	while (maxWait-- && !NO_HaveKeyBeenPressed)
 		delay(100);
 }
@@ -101,7 +110,7 @@ void testMenu(void)
 					case 1:
 						screenClear();
 						chooseLine = -1;
-						OLED_print("left' to show left induced voltage value, so the right\nmid to back");
+						OLED_print("left' to show left voltage,so the right\nmid to back");
 						while (key_mid)
 							if (!key_left)
 							{
@@ -136,6 +145,8 @@ void testMenu(void)
 							{
 								screenClear();
 								keyChangeValue(2, speedTest);
+								screenClear();
+								displayValueMenu(2, speedTest);
 								motorSpeedSet(speedTest[0].value, LEFTMOTOR);
 								motorSpeedSet(speedTest[1].value, RIGHTMOTOR);
 							}
@@ -154,21 +165,25 @@ void testMenu(void)
 //对“参数调整”菜单进行按键操作
 void modifyMenu(void)
 {
-	screenClear();
-	chooseLine = 0;
-	displayValueMenu(MODIFY, modify);
-	while(key_mid)
-		if (!NO_HaveKeyBeenPressed)
-		{
-			keyChangeValue(MODIFY, modify);
-			displayValueMenu(MODIFY - chooseLine, modify + chooseLine);
-			obstacleDistance = modify[0].value;
-			std_s_l = modify[1].value;
-			std_s_r = modify[2].value;
-			roundSpeed = modify[3].value;
-			roundSpeed = modify[4].value;
-			straightTime = modify[5].value;
-		}
+//	screenClear();
+//	chooseLine = 0;
+//	displayValueMenu(MODIFY, modify);
+//	while(key_mid)
+//		if (!NO_HaveKeyBeenPressed)
+//		{
+//			keyChangeValue(MODIFY, modify);
+//			screenClear();
+//			if (MODIFY - chooseLine > 3)
+//				displayValueMenu(3, modify + chooseLine);
+//			else
+//				displayValueMenu(3, modify + MODIFY - 4);
+//			obstacleDistance = modify[0].value;
+//			std_s_l = modify[1].value;
+//			std_s_r = modify[2].value;
+//			roundSpeed = modify[3].value;
+//			roundSpeed = modify[4].value;
+//			straightTime = modify[5].value;
+//		}
 }
 
 //main函数里 一级按键操作
@@ -189,10 +204,45 @@ void keyOperation(void)
 				case 0:
 					screenClear();
 					chooseLine = 0;
-					OLED_print("smart car test\n(press 'mid' to\nreturn back)");
+					//OLED_print("smart car test\n(press 'mid' to\nreturn back)");
+					
 					carStart();
 					while (key_mid)
-						;
+					{
+						/*screenClear();
+						OLED_print("left-->");
+						OLED_putNumber(sleft);
+						OLED_print("\nright-->");
+						OLED_putNumber(sright);
+						OLED_print("\nadc_l-->");
+						OLED_putNumber(adcValueL);
+						OLED_print("\nadc_r-->");
+						OLED_putNumber(adcValueR);
+						delay(500);*/
+						adcValueL = adcMeasure(LEFTindc);
+						delay(1);
+						adcValueR = adcMeasure(RIGHTindc);
+						sleft = std_s_l + (std_adcValue - adcValueL) / speedControlCoefficient;
+						sright = std_s_r + (std_adcValue - adcValueR) / speedControlCoefficient;
+						sleft = sleft > 100 ? 100 : sleft;
+						sleft = sleft < 0 ? 0 : sleft;
+						sright = sright > 100 ? 100 : sright;
+						sright = sright < 0 ? 0 : sright;
+
+						motorSpeedSet(sleft, LEFTMOTOR);
+						motorSpeedSet(sright, RIGHTMOTOR);
+
+						screenClear();
+						OLED_print("left-->");
+						OLED_putNumber(sleft);
+						OLED_print("\nright-->");
+						OLED_putNumber(sright);
+						OLED_print("\nadc_l-->");
+						OLED_putNumber(adcValueL);
+						OLED_print("\nadc_r-->");
+						OLED_putNumber(adcValueR);
+						delay(500);
+					}
 					carOff();
 					break;
 				case 1:
@@ -214,10 +264,5 @@ void keyOperation(void)
 
 void menuInitial(void)
 {
-	modify[0].value = obstacleDistance;
-	modify[1].value = std_s_l;
-	modify[2].value = std_s_r;
-	modify[3].value = roundSpeed;
-	modify[4].value = roundSpeed;
-	modify[5].value = straightTime;
+
 }

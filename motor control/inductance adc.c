@@ -6,7 +6,7 @@ un16 adcMeasure(un8 select)
 {
 	//时序
 	P_SW2 |= 0x80;
-	ADCTIM = 0x34;
+	ADCTIM = 0x3f;
 	P_SW2 &= 0x7f;
 
 	//右对齐，系统时钟/2/16
@@ -16,6 +16,8 @@ un16 adcMeasure(un8 select)
 
 	EADC = 1;//允许adc中断
 	ADC_CONTR |= 0x40;//start
+	_nop_();
+	_nop_();
 	while (ADC_CONTR & 0x40)
 		;
 	return adcValue;
