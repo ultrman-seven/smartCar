@@ -1,6 +1,10 @@
 # smartCar
 this is the smart car competition
 
+branch: run test
+---
+this branch is built due to some big change due to the shit of MCU
+
 |auther|chip|starting date|
 |:----------|:---------:|:-----------------|
 |Leslie|STC-8H8K64U|2020/10/30|
