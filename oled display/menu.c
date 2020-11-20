@@ -6,14 +6,6 @@
 #define MODIFY 6
 char chooseLine = 0;
 
-#define speedControlCoefficient 40
-#define std_adcValue 1900
-//标准速度
-#define std_s_l 20
-#define std_s_r 20
-un16 adcValueL, adcValueR;
-int sleft, sright;
-
 un8 testSpeedL = 50;
 un8 testSpeedR = 50;
 
@@ -200,50 +192,15 @@ void keyOperation(void)
 				chooseLine = 0;
 				switch (count)
 				{
-
 				case 0:
 					screenClear();
-					chooseLine = 0;
-					//OLED_print("smart car test\n(press 'mid' to\nreturn back)");
-					
+					chooseLine = -1;
+					//OLED_print("smart car test\n(press 'mid' to\nreturn back)");					
 					carStart();
 					while (key_mid)
-					{
-						/*screenClear();
-						OLED_print("left-->");
-						OLED_putNumber(sleft);
-						OLED_print("\nright-->");
-						OLED_putNumber(sright);
-						OLED_print("\nadc_l-->");
-						OLED_putNumber(adcValueL);
-						OLED_print("\nadc_r-->");
-						OLED_putNumber(adcValueR);
-						delay(500);*/
-						adcValueL = adcMeasure(LEFTindc);
-						delay(1);
-						adcValueR = adcMeasure(RIGHTindc);
-						sleft = std_s_l + (std_adcValue - adcValueL) / speedControlCoefficient;
-						sright = std_s_r + (std_adcValue - adcValueR) / speedControlCoefficient;
-						sleft = sleft > 100 ? 100 : sleft;
-						sleft = sleft < 0 ? 0 : sleft;
-						sright = sright > 100 ? 100 : sright;
-						sright = sright < 0 ? 0 : sright;
-
-						motorSpeedSet(sleft, LEFTMOTOR);
-						motorSpeedSet(sright, RIGHTMOTOR);
-
-						screenClear();
-						OLED_print("left-->");
-						OLED_putNumber(sleft);
-						OLED_print("\nright-->");
-						OLED_putNumber(sright);
-						OLED_print("\nadc_l-->");
-						OLED_putNumber(adcValueL);
-						OLED_print("\nadc_r-->");
-						OLED_putNumber(adcValueR);
-						delay(500);
-					}
+						carControl();
 					carOff();
+					chooseLine = 0;
 					break;
 				case 1:
 					testMenu();

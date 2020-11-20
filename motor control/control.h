@@ -16,4 +16,5 @@
 //extern un16 adcValueR;
 void carStart(void);
 void carOff(void);
+void carControl(void);
 #endif // !__CONTROL_H__
