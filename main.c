@@ -26,7 +26,7 @@ void initinial(void)
 
 	P_SW2 &= 0x7f;
 	//adcLeft = adcRight = 0;
-	bep = 1;
+
 	//ultra sound
 	UlSoundInitinal();
 

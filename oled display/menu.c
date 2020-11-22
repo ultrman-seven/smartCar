@@ -52,7 +52,7 @@ void keyChooseState(un8 num,menu* pro)
 		delay(100);
 }
 //对菜单数值进行调整操作
-void keyChangeValue(un8 num, menu* pro)
+void keyChangeValue(menu* pro)
 {
 	un8 maxWait = 20;
 	if ((!key_up) && chooseLine > 0)
@@ -138,7 +138,7 @@ void testMenu(void)
 							if (!NO_HaveKeyBeenPressed)
 							{
 								screenClear();
-								keyChangeValue(2, speedTest);
+								keyChangeValue(speedTest);
 								screenClear();
 								displayValueMenu(2, speedTest);
 								motorSpeedSet(speedTest[0].value, LEFTMOTOR);

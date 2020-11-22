@@ -1,9 +1,4 @@
 #include"OLED.h"
-sbit _CS = P1 ^ 6;
-sbit RES = P1 ^ 5;
-sbit RS = P3 ^ 0;
-sbit SCL = P1 ^ 3;//serial clock input
-sbit SI = P1 ^ 4;//serial data input
 
 void Ins_trans(unsigned char command)
   {
