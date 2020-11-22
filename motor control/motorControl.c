@@ -1,20 +1,19 @@
 #include"control.h"
 #include"oledio.h"
 //adc采集样本数量
-#define ADC_NUM 9
+#define ADC_NUM 5
+//#define stdADC 1220
+//pid控制系数
+#define Kp 60
+#define Ki 0
+#define Kd 10
 
-//速度控制系数，检测的电感电压值与标准检测值的差不能直接用来控制速度，
-//因为大于100.要×这个比例系数，使其在区间（-std_s_l/r，100--std_s_l/r）内
-#define speedControlCoefficient 40
-
-#define obstacleDistance 100
-
-//标准adc检测值
-#define std_adcValue 1900
+#define YinJie 290
 
 //标准速度
-#define std_s_l 20
-#define std_s_r 20
+#define stdSpeed 30
+//#define stdSpeedL 30
+//#define stdSpeedR 30
 
 //开启定时器，t3 超声波，定时60ms；t4 adc检测，定时1毫秒；超声波及adc在定时器中断中进行
 void carStart(void)
@@ -43,7 +42,7 @@ void carOff(void)
 }
 
 //返回平均值滤波后adc检测电感值
-un16 findMedianAdcValue(un8 adc)
+un16 findAverageAdcValue(un8 adc)
 {
 	un16 sum = 0;
 	un8 count;
@@ -53,31 +52,63 @@ un16 findMedianAdcValue(un8 adc)
 }
 void carControl(void)
 {
-	int sleft, sright;
-	un16 adcValueL, adcValueR;
-	adcValueL = findMedianAdcValue(LEFTindc);
-	adcValueR = findMedianAdcValue(RIGHTindc);
-	sleft = std_s_l + (std_adcValue - adcValueL) / speedControlCoefficient;
-	sright = std_s_r + (std_adcValue - adcValueR) / speedControlCoefficient;
-	sleft = sleft > 100 ? 100 : sleft;
-	sleft = sleft < 0 ? 0 : sleft;
-	sright = sright > 100 ? 100 : sright;
-	sright = sright < 0 ? 0 : sright;
+	static int proprotion = 0/*比例控制*/, integral = 0/*积分控制*/, differential = 0/*微分控制*/, temp;
+	signed int controlSpeed;
+	un16 adcValueL, adcValueR, speedL, speedR;
+	//采样
+	adcValueL = findAverageAdcValue(LEFTindc);
+	adcValueR = findAverageAdcValue(RIGHTindc);
 
-	motorSpeedSet(sleft, LEFTMOTOR);
-	motorSpeedSet(sright, RIGHTMOTOR);
+	temp = proprotion;
+
+		//比例误差
+	proprotion = (adcValueL - adcValueR)/10;
+	//proprotion = proprotion > 1 ? 1 : proprotion;
+	//proprotion = proprotion < -1 ? -1 : proprotion;
+		//积分误差
+	integral += proprotion;
+		//微分误差
+	differential = proprotion - temp;
+
+	controlSpeed = (Kp * proprotion + Ki * integral + Kd * differential) / YinJie;
+
+	speedL = (stdSpeed - controlSpeed) > 0 ? stdSpeed - controlSpeed : 0;
+	speedR = (stdSpeed + controlSpeed) > 0 ? stdSpeed + controlSpeed : 0;
+	
+	speedL = (speedL > 100) ? 100 : speedL;
+	speedR = (speedR > 100) ? 100 : speedR;
+	motorSpeedSet(speedL, LEFTMOTOR);
+	motorSpeedSet(speedR, RIGHTMOTOR);
+
+	//un8 speedL, speedR;
+	//un16 adcValueL, adcValueR;
+	//adcValueL = findAverageAdcValue(LEFTindc);
+	//adcValueR = findAverageAdcValue(RIGHTindc);
+
+	//speedL = (stdSpeedL + (stdADC - adcValueL) / 500) > 0 ? stdSpeedL + (stdADC - adcValueL) / 500 : 0;
+	//speedR = (stdSpeedR + (stdADC - adcValueR) / 500) > 0 ? stdSpeedR + (stdADC - adcValueR) / 500 : 0;
 
 	screenClear();
+	//OLED_print("proprotion->");
+	//OLED_putNumber(proprotion);
+	//OLED_print("\nconts->");
+	//OLED_putNumber(controlSpeed);
+	//OLED_putchar((controlSpeed > 0) ? '+' : '-');
 	OLED_print("left-->");
-	OLED_putNumber(sleft);
+		OLED_putNumber(speedL);
 	OLED_print("\nright-->");
-	OLED_putNumber(sright);
+	OLED_putNumber(speedR);
 	OLED_print("\nadc_l-->");
 	OLED_putNumber(adcValueL);
 	OLED_print("\nadc_r-->");
 	OLED_putNumber(adcValueR);
-}
 
+	//sleft = sleft > 100 ? 100 : sleft;
+	//sleft = sleft < 0 ? 0 : sleft;
+	//sright = sright > 100 ? 100 : sright;
+	//sright = sright < 0 ? 0 : sright;int controlSpeed;
+	delay(1);
+}
 
 //在中断里对全局变量进行操作，
 //如果全局变量被其他函数占用，对变量的操作会出错。草。
