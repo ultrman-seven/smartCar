@@ -1,4 +1,8 @@
 #include"ultraSound.h"
+
+sbit trig = P0 ^ 5;
+sbit echo = P3 ^ 2;
+
 un16 distance = 0;
 un8 t0Time = 1;
 //8H
@@ -35,7 +39,8 @@ void UlSoundInitinal(void)
 un16 ULsound_diatance(void)
 {
 	un8 maxWait = 30;
-	distance = t0Time = 0;
+	distance = 0;
+	t0Time = 0;
 
 	//ultra sound start
 	//Æô¶¯³¬Éù²¨Ä£¿é

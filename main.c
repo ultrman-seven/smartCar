@@ -4,8 +4,6 @@
 #include"control.h"
 #include"menu.h"
 
-sbit bep = P0 ^ 4;
-
 void initinial(void)
 {
 	//interrupt

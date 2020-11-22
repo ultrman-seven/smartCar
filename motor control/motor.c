@@ -4,7 +4,7 @@ void motorSpeedSet(un8 speed, un8 motor)
 {
 	un16 dutyCycle;
 	speed = speed > 100 ? 100 : speed;
-	speed = speed < 5 ? 5 : speed;
+	speed = speed < 10 ? 10 : speed;
 	dutyCycle = 655 * speed;
 	P_SW2 |= 0x80;
 	if (motor == LEFTMOTOR)

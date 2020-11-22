@@ -94,16 +94,6 @@ void OLED_putContrastChar(char ch)
 	wordCount++;
 }
 
-//单片机不能用递归，参数会变。草。
-//MCU the shit
-
-//void OLED_putNumber(un16 num)
-//{
-//	if (num / 10)
-//		OLED_putNumber(num / 10);
-//	OLED_putchar(num % 10 + '0');
-//}
-
 void OLED_putNumber(un16 num)
 {
 	un16 count;

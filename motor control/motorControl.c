@@ -12,8 +12,6 @@
 
 //标准速度
 #define stdSpeed 30
-//#define stdSpeedL 30
-//#define stdSpeedR 30
 
 //开启定时器，t3 超声波，定时60ms；t4 adc检测，定时1毫秒；超声波及adc在定时器中断中进行
 void carStart(void)
@@ -61,13 +59,11 @@ void carControl(void)
 
 	temp = proprotion;
 
-		//比例误差
+	//比例误差
 	proprotion = (adcValueL - adcValueR)/10;
-	//proprotion = proprotion > 1 ? 1 : proprotion;
-	//proprotion = proprotion < -1 ? -1 : proprotion;
-		//积分误差
+	//积分误差
 	integral += proprotion;
-		//微分误差
+	//微分误差
 	differential = proprotion - temp;
 
 	controlSpeed = (Kp * proprotion + Ki * integral + Kd * differential) / YinJie;
@@ -80,22 +76,9 @@ void carControl(void)
 	motorSpeedSet(speedL, LEFTMOTOR);
 	motorSpeedSet(speedR, RIGHTMOTOR);
 
-	//un8 speedL, speedR;
-	//un16 adcValueL, adcValueR;
-	//adcValueL = findAverageAdcValue(LEFTindc);
-	//adcValueR = findAverageAdcValue(RIGHTindc);
-
-	//speedL = (stdSpeedL + (stdADC - adcValueL) / 500) > 0 ? stdSpeedL + (stdADC - adcValueL) / 500 : 0;
-	//speedR = (stdSpeedR + (stdADC - adcValueR) / 500) > 0 ? stdSpeedR + (stdADC - adcValueR) / 500 : 0;
-
 	screenClear();
-	//OLED_print("proprotion->");
-	//OLED_putNumber(proprotion);
-	//OLED_print("\nconts->");
-	//OLED_putNumber(controlSpeed);
-	//OLED_putchar((controlSpeed > 0) ? '+' : '-');
 	OLED_print("left-->");
-		OLED_putNumber(speedL);
+	OLED_putNumber(speedL);
 	OLED_print("\nright-->");
 	OLED_putNumber(speedR);
 	OLED_print("\nadc_l-->");
@@ -103,21 +86,5 @@ void carControl(void)
 	OLED_print("\nadc_r-->");
 	OLED_putNumber(adcValueR);
 
-	//sleft = sleft > 100 ? 100 : sleft;
-	//sleft = sleft < 0 ? 0 : sleft;
-	//sright = sright > 100 ? 100 : sright;
-	//sright = sright < 0 ? 0 : sright;int controlSpeed;
 	delay(1);
 }
-
-//在中断里对全局变量进行操作，
-//如果全局变量被其他函数占用，对变量的操作会出错。草。
-
-//MCU the shit
-
-//void t4_InductanceAdc(void) interrupt 20
-//{
-//	T4OFF
-
-//	T4ON
-//}

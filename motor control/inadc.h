@@ -4,10 +4,6 @@
 
 #define LEFTindc 0
 #define RIGHTindc 1
-#define ADC_START ADC_CONTR=0x80;
-
-sbit adcLeft = P1 ^ 0;
-sbit adcRight = P1 ^ 1;
 
 un16 adcMeasure(un8 select);
 #endif // !__INADC_H__

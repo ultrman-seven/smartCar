@@ -71,6 +71,12 @@ using the left and right inductance to find where the track is.
 
 it means that the higher the value is, the lower the voltage will be.
 
+## beep
+|beep|
+|:-----:|
+|0.4|
+
+useless
 ## 5 keys
 define up, down, left, right, mid
 

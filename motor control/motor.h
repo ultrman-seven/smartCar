@@ -9,8 +9,6 @@
 #define MOTOR_OPPOSITE 2
 #define MOTOR_BRAKING 3
 
-//sbit E_left = P0 ^ 0;
-//sbit E_right = P0 ^ 1
 sbit E_left = P2 ^ 0;
 sbit E_right = P2 ^ 2;
 sbit M1left = P3 ^ 5;
