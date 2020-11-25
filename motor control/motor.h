@@ -5,8 +5,8 @@
 #define LEFTMOTOR 0
 #define RIGHTMOTOR 1
 
-#define MOTOR_FORWARD 1
-#define MOTOR_OPPOSITE 2
+#define MOTOR_FORWARD 2
+#define MOTOR_OPPOSITE 1
 #define MOTOR_BRAKING 3
 
 sbit E_left = P2 ^ 0;

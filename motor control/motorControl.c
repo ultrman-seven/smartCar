@@ -8,10 +8,10 @@
 #define Ki 0
 #define Kd 10
 
-#define YinJie 290
+//#define YinJie 290
 
 //标准速度
-#define stdSpeed 30
+#define stdSpeed 40
 
 //开启定时器，t3 超声波，定时60ms；t4 adc检测，定时1毫秒；超声波及adc在定时器中断中进行
 void carStart(void)
@@ -51,12 +51,13 @@ un16 findAverageAdcValue(un8 adc)
 void carControl(void)
 {
 	static int proprotion = 0/*比例控制*/, integral = 0/*积分控制*/, differential = 0/*微分控制*/, temp;
-	signed int controlSpeed;
+	signed int controlSpeed, adcSum;
 	un16 adcValueL, adcValueR, speedL, speedR;
 	//采样
 	adcValueL = findAverageAdcValue(LEFTindc);
 	adcValueR = findAverageAdcValue(RIGHTindc);
 
+	adcSum = (adcValueL + adcValueR) / 10;
 	temp = proprotion;
 
 	//比例误差
@@ -66,7 +67,7 @@ void carControl(void)
 	//微分误差
 	differential = proprotion - temp;
 
-	controlSpeed = (Kp * proprotion + Ki * integral + Kd * differential) / YinJie;
+	controlSpeed = (Kp * proprotion + Ki * integral + Kd * differential) / adcSum;
 
 	speedL = (stdSpeed - controlSpeed) > 0 ? stdSpeed - controlSpeed : 0;
 	speedR = (stdSpeed + controlSpeed) > 0 ? stdSpeed + controlSpeed : 0;
