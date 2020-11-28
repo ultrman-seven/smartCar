@@ -201,6 +201,7 @@ void keyOperation(void)
 					carStart();
 					while (key_mid)
 						carControl();
+					key_mid = 1;
 					carOff();
 					chooseLine = 0;
 					break;

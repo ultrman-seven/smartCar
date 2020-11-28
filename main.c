@@ -7,7 +7,7 @@
 void initinial(void)
 {
 	//interrupt
-	EA = 1;//总中断
+	EA = 1;//总中断打开
 
 	P_SW2 |= 0x80;//允许访问扩展 RAM 区特殊功能寄存器
 
