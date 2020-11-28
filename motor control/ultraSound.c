@@ -31,15 +31,13 @@ void Delay100ms()		//@12.000MHz
 
 void UlSoundInitinal(void)
 {
-	trig = echo = 0;
+	trig = 0;
+	echo = 1;
 	IT0 = 1;
 	Delay100ms();
 	//tmod:0000 1001
 	//对t0: gate = 1，只有INT0为高电平（echo拉高）时才开始计数，C/T = 0，定时模式， m1m0 = 01， 工作方式16位不重装载
 	TMOD = 0x09;
-
-	//系统时钟1分频
-	AUXR |= 0x80;
 }
 
 un16 ULsound_diatance(void)
@@ -63,7 +61,7 @@ un16 ULsound_diatance(void)
 	//echo拉低即进入外部中断
 	EX0 = 1;//允许外部中断
 	IE0 = 0;//清除外部中断标志
-	IT0 = 1;//下降沿触发
+
 	//等待echo拉低（外部中断结束）或超时
 	while (echo&&--maxWait)
 		delay(2);
