@@ -36,8 +36,8 @@ void carStart(void)
 	//定时器4用于检测障碍物距离，定时60ms
 	T4T3M =0x00;	//定时器时钟12T模式
 
-	T3L = 0xF0;		//设置定时初值
-	T3H = 0xD8;		//设置定时初值
+	T3L = 0x18;		//设置定时初值
+	T3H = 0xFC;
 	T3ON;	//定时器3开始计时
 
 	T4L = 0xA0;		//设置定时初值
@@ -114,17 +114,16 @@ void carControl(void)
 
 	//检测是直行还是转弯
 	if (testFlag)
-		if (testTime++ < 10)
-		{
+		if (testTime++ < 5)	
 			runState += (controlSpeed / 10);
-		}
 		else
 		{
-			testTime = testFlag = runState = 0;
-			if (runState >= 10 || runState <= -10)
+			testTime = testFlag = 0;
+			if (runState >= 13 || runState <= -13)
 				beepOnOff(BEEP_ON);
 			else
 				beepOnOff(BEEP_OFF);
+			runState = 0;
 		}
 }
 
@@ -134,10 +133,10 @@ void runStateTest(void) interrupt 19
 	testFlag = 1;
 }
 
-void obstucleTest(void) interrupt 20
+void obstacleTest(void) interrupt 20
 {
 	AUXINTIF &= 0xfb;//清除中断标志
-	if (ULsound_diatance() <= 40)
+	if (ULsound_diatance() <= 30)
 	{
 		bepForSecs(1);
 		key_mid = 0;

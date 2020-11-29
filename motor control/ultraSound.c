@@ -37,12 +37,12 @@ void UlSoundInitinal(void)
 	Delay100ms();
 	//tmod:0000 1001
 	//对t0: gate = 1，只有INT0为高电平（echo拉高）时才开始计数，C/T = 0，定时模式， m1m0 = 01， 工作方式16位不重装载
-	TMOD = 0x09;
+	TMOD = 0x09;//0x01
 }
 
 un16 ULsound_diatance(void)
 {
-	un8 maxWait = 100;
+	un8 maxWait = 20;
 	distance = 0;
 
 	//ultra sound start
@@ -65,7 +65,8 @@ un16 ULsound_diatance(void)
 	//等待echo拉低（外部中断结束）或超时
 	while (echo&&--maxWait)
 		delay(2);
-	return distance * 0.017;//cm
+
+	return maxWait ? distance * 0.017 : 500;//cm
 }
 
 //echo 置低电平时触发外部中断，在此停止定时器并读取定时的时间
