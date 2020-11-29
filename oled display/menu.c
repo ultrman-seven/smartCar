@@ -92,11 +92,15 @@ void testMenu(void)
 					case 0:
 						screenClear();
 						chooseLine = -1;
-						OLED_print("obstacle distance\nis <");
-						OLED_putNumber(ULsound_diatance());
-						OLED_print(">\npress 'mid' to\nreturn back");
+						OLED_print("press anykey to\nshow distance\nexcept mid");
 						while (key_mid)
-							;
+							if (!NO_HaveKeyBeenPressed)
+							{
+								screenClear();
+								OLED_print("distance is\n-->");
+								OLED_putNumber(ULsound_diatance());
+								OLED_print("\npress 'mid' to\nreturn back");
+							}
 						screenClear();
 						chooseLine = 0;
 						displayStateMenu(TEST, test);

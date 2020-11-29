@@ -33,7 +33,7 @@ void UlSoundInitinal(void)
 {
 	trig = 0;
 	echo = 1;
-	IT0 = 1;
+	IT0 = 1;//下降沿触发
 	Delay100ms();
 	//tmod:0000 1001
 	//对t0: gate = 1，只有INT0为高电平（echo拉高）时才开始计数，C/T = 0，定时模式， m1m0 = 01， 工作方式16位不重装载
