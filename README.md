@@ -3,7 +3,12 @@ this is the smart car competition
 
 branch: run test
 ---
-this branch is built due to some big change due to the shit of MCU
+this branch is built due to some big change caused by the shit of MCU
+
+difference from main:
+
+in main, the control of car is put in the interrupt form time4; 
+but in this branch, it have been put into a 'while', because some unpredictable error will happen if when operate global variable in interrupt function.
 
 |auther|chip|starting date|
 |:----------|:---------:|:-----------------|
@@ -25,9 +30,9 @@ is the function to send command to oled.
 is the function to initialization the oled. (having been put in `void startCartoon(void);`)
 
 `void startCartoon(void);`
-the function is used in the begining when the program start, put "新北とうふ店(自家用)" in oled.
+the function is used in the begining when the program start, put "新北とうふ店(自家甄1�7)" in oled.
 
-`font.h` and `font.c` are about word mold of **ASCII** and word mold of **新北とうふ店(自家用)**
+`font.h` and `font.c` are about word mold of **ASCII** and word mold of **新北とうふ店(自家甄1�7)**
 
 ## ultra sound
 |VCC|TRIG|ECHO|OUT|GND|
