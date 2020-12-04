@@ -21,8 +21,11 @@ this project is mainly divided into 4 parts:
 **1. display:**
 
 functions about operations of oled(`oled.c` and `oled.h`); 
+
 functions about output (`oledio.h` and `oled_output.c`);
+
 functions about menu to display and operations about it(`menu.c` and `menu.h`);
+
 word molds(`font.c` and `font.h`), used in `oled_output.c`.
 
 **2.motor:**
@@ -110,7 +113,6 @@ it means that the higher the value is, the lower the voltage will be.
 |:-----:|
 |0.4|
 
-useless
 ## 5 keys
 define up, down, left, right, mid
 
