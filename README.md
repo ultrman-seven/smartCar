@@ -82,6 +82,7 @@ using pwm to control the speed of car motor.
 |:------:|:-----------:|:--------:|:--------:|
 |left|2.0|3.5|5.1|
 |right|2.2|5.0|3.4|
+
 Enable left and right receive pwm to control the speed.
 
 m0 and m1 control the work mode of motor
