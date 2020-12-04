@@ -62,9 +62,9 @@ is the function to send command to oled.
 is the function to initialization the oled. (having been put in `void startCartoon(void);`)
 
 `void startCartoon(void);`
-the function is used in the begining when the program start, put "新北とラふ店（自家用）" in oled.
+the function is used in the begining when the program start, put "新北とラふ店（自家用＄1�7" in oled.
 
-`font.h` and `font.c` are about word mold of **ASCII** and word mold of **新北とラふ店（自家用）**
+`font.h` and `font.c` are about word mold of **ASCII** and word mold of **新北とラふ店（自家用＄1�7**
 
 ## ultra sound
 |VCC|TRIG|ECHO|OUT|GND|
@@ -124,8 +124,6 @@ define up, down, left, right, mid
 
 this defination means none of these keys have been pressed.
 
-here are other detiled functions
----
 ## menu
 
 ## control
