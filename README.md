@@ -1,6 +1,10 @@
 # smartCar
 this is the smart car competition
 
+|auther|chip|starting date|
+|:----------|:---------:|:-----------------|
+|Leslie|STC-8H8K64U|2020/10/30|
+
 branch: run test
 ---
 this branch is built due to some big change caused by the shit of MCU
@@ -8,13 +12,38 @@ this branch is built due to some big change caused by the shit of MCU
 difference from main:
 
 in main, the control of car is put in the interrupt form time4; 
-but in this branch, it have been put into a 'while', because some unpredictable error will happen if when operate global variable in interrupt function.
+but in this branch, it have been put into a 'while', because some unpredictable error will happen if operate global variable in interrupt function.
 
-|auther|chip|starting date|
-|:----------|:---------:|:-----------------|
-|Leslie|STC-8H8K64U|2020/10/30|
+generally describe
+---
+this project is mainly divided into 4 parts: 
 
-here are models
+**1. display:**
+
+functions about operations of oled(`oled.c` and `oled.h`); 
+functions about output (`oledio.h` and `oled_output.c`);
+functions about menu to display and operations about it(`menu.c` and `menu.h`);
+word molds(`font.c` and `font.h`), used in `oled_output.c`.
+
+**2.motor:**
+
+using m1m0 to set the working mode of the motor;
+using PWM to control the speed of motor.
+(`motor.c` and `motor.h`)
+
+**3.measure:**
+
+voltage(to seek the way):
+using adc to measure the voltage value of inductance.(`indac.h` and `inductance adc.c`)
+
+distance(to check for obstacle):
+using ultrasound to measure the distance between car and the obstacle.(`ultraSound.c` and `lutraSound.h`)
+
+**4.control:**
+
+using Pid algorithm to let the car in the right way.(`control.c` and `control.h`)
+
+here are details
 ---
 ## oled
 |GND|VDD|D0|D1|RES|DC|CS|
@@ -30,9 +59,9 @@ is the function to send command to oled.
 is the function to initialization the oled. (having been put in `void startCartoon(void);`)
 
 `void startCartoon(void);`
-the function is used in the begining when the program start, put "新北とうふ店(自家甄1�7)" in oled.
+the function is used in the begining when the program start, put "新北とラふ店（自家用）" in oled.
 
-`font.h` and `font.c` are about word mold of **ASCII** and word mold of **新北とうふ店(自家甄1�7)**
+`font.h` and `font.c` are about word mold of **ASCII** and word mold of **新北とラふ店（自家用）**
 
 ## ultra sound
 |VCC|TRIG|ECHO|OUT|GND|
