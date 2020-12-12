@@ -1,7 +1,7 @@
 # smartCar
 this is the smart car competition
 
-|auther|chip|starting date|
+|author|chip|starting date|
 |:----------|:---------:|:-----------------|
 |Leslie|STC-8H8K64U|2020/10/30|
 
@@ -14,11 +14,11 @@ difference from main:
 in main, the control of car is put in the interrupt form time4; 
 but in this branch, it have been put into a 'while', because some unpredictable error will happen if operate global variable in interrupt function.
 
-generally describe
----
+# generally describe
+
 this project is mainly divided into 4 parts: 
 
-**1. display:**
+## 1. display:
 
 functions about operations of oled(`oled.c` and `oled.h`); 
 
@@ -28,13 +28,13 @@ functions about menu to display and operations about it(`menu.c` and `menu.h`);
 
 word molds(`font.c` and `font.h`), used in `oled_output.c`.
 
-**2.motor:**
+## 2.motor:
 
 using m1m0 to set the working mode of the motor;
 using PWM to control the speed of motor.
 (`motor.c` and `motor.h`)
 
-**3.measure:**
+## 3.measure:
 
 voltage(to seek the way):
 using adc to measure the voltage value of inductance.(`indac.h` and `inductance adc.c`)
@@ -42,18 +42,18 @@ using adc to measure the voltage value of inductance.(`indac.h` and `inductance 
 distance(to check for obstacle):
 using ultrasound to measure the distance between car and the obstacle.(`ultraSound.c` and `lutraSound.h`)
 
-**4.control:**
+## 4.control:
 
 using Pid algorithm to let the car in the right way.(`control.c` and `control.h`)
 
-here are details
----
+# details
+
 ## oled
 |GND|VDD|D0|D1|RES|DC|CS|
 |:-----:|:-----:|:-----:|:-----:|:-----:|:-----:|:-----:|
 |GND|VCC|1.3|1.4|1.5|3.0|1.6|
 
-`OLED.h` and `OLED.c` are codes about controling oled
+`OLED.h` and `OLED.c` are codes about controlling oled
 
 `void Ins_trans(unsigned char command);`
 is the function to send command to oled.
@@ -62,9 +62,9 @@ is the function to send command to oled.
 is the function to initialization the oled. (having been put in `void startCartoon(void);`)
 
 `void startCartoon(void);`
-the function is used in the begining when the program start, put "新北とラふ店（自家用＄1�7" in oled.
+the function is used in the beginning when the program start, put "新北とラふ店（自家用)" in oled.
 
-`font.h` and `font.c` are about word mold of **ASCII** and word mold of **新北とラふ店（自家用＄1�7**
+`font.h` and `font.c` are about word mold of **ASCII** and word mold of **新北とラふ店（自家用)**
 
 ## ultra sound
 |VCC|TRIG|ECHO|OUT|GND|
@@ -123,7 +123,7 @@ define up, down, left, right, mid
 
 `#define NO_HaveKeyBeenPressed (key_down | key_up | key_mid | key_left | key_right)`
 
-this defination means none of these keys have been pressed.
+this definition means none of these keys have been pressed.
 
 ## menu
 
